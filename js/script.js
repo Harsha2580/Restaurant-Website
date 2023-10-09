@@ -59,12 +59,69 @@
     );
   });
 
+
+// search cat
+  fb.search = function () {
+    showLoading("#main-content");
+    $ajaxUtils.sendGetRequest(allCategoriesUrl, searchAndShowCategoriesHTML);
+  };
+
+  function searchAndShowCategoriesHTML(categories) {
+    // Load title snippet of categories page
+    $ajaxUtils.sendGetRequest(
+      categoriesTitleHtml,
+      function (categoriesTitleHtml) {
+        // Retrieve single category snippet
+        $ajaxUtils.sendGetRequest(
+          categoryHtml,
+          function (categoryHtml) {
+            // Switch CSS class active to menu button
+            switchMenuToActive();
+            var categoriesViewHtml = searchCategoriesViewHtml(
+              categories,
+              categoriesTitleHtml,
+              categoryHtml
+            );
+            insertHtml("#main-content", categoriesViewHtml);
+          },
+          false
+        );
+      },
+      false
+    );
+  }
+
+  function searchCategoriesViewHtml(
+    categories,
+    categoriesTitleHtml,
+    categoryHtml
+  ) {
+    var finalHtml = categoriesTitleHtml;
+    finalHtml += "<section class='row'>";
+    var find  = (document.getElementById("catName").value).toLowerCase();
+    document.getElementById("catName").value = "";
+    // Loop over categories
+    for (var i = 0; i < categories.length; i++) {
+      if((categories[i].name).toLowerCase() === find){
+        var html = categoryHtml;
+        var name = "" + categories[i].name;
+        var short_name = categories[i].short_name;
+        html = insertProperty(html, "name", name);
+        html = insertProperty(html, "short_name", short_name);
+        finalHtml += html;
+      } 
+    }
+
+    finalHtml += "</section>";
+    return finalHtml;
+  }
+// search cat end
+
   // Load the menu categories view
   fb.loadMenuCategories = function () {
     showLoading("#main-content");
     $ajaxUtils.sendGetRequest(allCategoriesUrl, buildAndShowCategoriesHTML);
   };
-
   // Load the menu items view
   // 'categoryShort' is a short_name for a category
   fb.loadMenuItems = function (categoryShort) {
