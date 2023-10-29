@@ -97,6 +97,7 @@
     categoryHtml
   ) {
     var finalHtml = categoriesTitleHtml;
+    var found = true;
     finalHtml += "<section class='row'>";
     var find  = (document.getElementById("catName").value).toLowerCase();
     document.getElementById("catName").value = "";
@@ -109,9 +110,12 @@
         html = insertProperty(html, "name", name);
         html = insertProperty(html, "short_name", short_name);
         finalHtml += html;
+        break;
       } 
     }
-
+    if(found){
+      finalHtml += "<p style = 'text-align: center; font-size: 20px;'> No such Item </p>"
+    }
     finalHtml += "</section>";
     return finalHtml;
   }
@@ -169,6 +173,7 @@
     );
 
     var finalHtml = menuItemsTitleHtml;
+    var found = true;
     finalHtml += "<section class='row'>";
 
     var menuItems = categoryMenuItems.menu_items;
@@ -195,9 +200,12 @@
         html = insertProperty(html, "description", menuItems[i].description);
 
         finalHtml += html;
+        break;
       }
     }
-
+    if(found){
+      finalHtml += "<p style = 'text-align: center; font-size: 20px;'> No such Item </p>"
+    }
     finalHtml += "</section>";
     return finalHtml;
   }
