@@ -100,10 +100,15 @@
     var found = true;
     finalHtml += "<section class='row'>";
     var find  = (document.getElementById("catName").value).toLowerCase();
+    if(screen.width<770){
+      find  = (document.getElementById("catName1").value).toLowerCase();
+      document.getElementById("catName1").value = "";
+    }
     document.getElementById("catName").value = "";
     // Loop over categories
     for (var i = 0; i < categories.length; i++) {
       if((categories[i].name).toLowerCase() === find){
+        found = false;
         var html = categoryHtml;
         var name = "" + categories[i].name;
         var short_name = categories[i].short_name;
@@ -179,8 +184,14 @@
     var menuItems = categoryMenuItems.menu_items;
     var catShortName = categoryMenuItems.category.short_name;
     var find  = (document.getElementById("itemName").value).toLowerCase();
+    document.getElementById("itemName").value = "";
+    if(screen.width<770){
+      find  = (document.getElementById("itemName1").value).toLowerCase();
+      document.getElementById("itemName1").value = "";
+    }
     for (var i = 0; i < menuItems.length; i++) {
       if((menuItems[i].name).toLowerCase() === find){
+        found = false;
         var html = menuItemHtml;
         html = insertProperty(html, "short_name", menuItems[i].short_name);
         html = insertProperty(html, "catShortName", catShortName);
