@@ -60,7 +60,7 @@
   });
 
 
-// search cat
+  // search cat
   fb.search = function () {
     showLoading("#main-content");
     $ajaxUtils.sendGetRequest(allCategoriesUrl, searchAndShowCategoriesHTML);
@@ -115,7 +115,93 @@
     finalHtml += "</section>";
     return finalHtml;
   }
-// search cat end
+  // search cat end
+
+  // search item 
+  fb.searchitem = function () {
+    showLoading("#main-content");
+    $ajaxUtils.sendGetRequest(
+      menuItemsUrl + "Items.json",
+      buildAndShowMenuItemHtml
+    );
+  };
+
+  function buildAndShowMenuItemHtml(categoryMenuItems) {
+    // Load title snippet of menu items page
+    $ajaxUtils.sendGetRequest(
+      menuItemsTitleHtml,
+      function (menuItemsTitleHtml) {
+        // Retrieve single menu item snippet
+        $ajaxUtils.sendGetRequest(
+          menuItemHtml,
+          function (menuItemHtml) {
+            // Switch CSS class active to menu button
+            switchMenuToActive();
+
+            var menuItemsViewHtml = buildMenuItemViewHtml(
+              categoryMenuItems,
+              menuItemsTitleHtml,
+              menuItemHtml
+            );
+            insertHtml("#main-content", menuItemsViewHtml);
+          },
+          false
+        );
+      },
+      false
+    );
+  }
+
+  function buildMenuItemViewHtml(
+    categoryMenuItems,
+    menuItemsTitleHtml,
+    menuItemHtml
+  ) {
+    menuItemsTitleHtml = insertProperty(
+      menuItemsTitleHtml,
+      "name",
+      categoryMenuItems.category.name
+    );
+    menuItemsTitleHtml = insertProperty(
+      menuItemsTitleHtml,
+      "special_instructions",
+      categoryMenuItems.category.special_instructions
+    );
+
+    var finalHtml = menuItemsTitleHtml;
+    finalHtml += "<section class='row'>";
+
+    var menuItems = categoryMenuItems.menu_items;
+    var catShortName = categoryMenuItems.category.short_name;
+    var find  = (document.getElementById("itemName").value).toLowerCase();
+    for (var i = 0; i < menuItems.length; i++) {
+      if((menuItems[i].name).toLowerCase() === find){
+        var html = menuItemHtml;
+        html = insertProperty(html, "short_name", menuItems[i].short_name);
+        html = insertProperty(html, "catShortName", catShortName);
+        html = insertItemPrice(html, "price_small", menuItems[i].price_small);
+        html = insertItemPortionName(
+          html,
+          "small_portion_name",
+          menuItems[i].small_portion_name
+        );
+        html = insertItemPrice(html, "price_large", menuItems[i].price_large);
+        html = insertItemPortionName(
+          html,
+          "large_portion_name",
+          menuItems[i].large_portion_name
+        );
+        html = insertProperty(html, "name", menuItems[i].name);
+        html = insertProperty(html, "description", menuItems[i].description);
+
+        finalHtml += html;
+      }
+    }
+
+    finalHtml += "</section>";
+    return finalHtml;
+  }
+  // search item end
 
   // Load the menu categories view
   fb.loadMenuCategories = function () {
@@ -184,6 +270,8 @@
     return finalHtml;
   }
 
+
+  
   // Builds HTML for the single category page based on the data
   // from the server
   function buildAndShowMenuItemsHTML(categoryMenuItems) {
