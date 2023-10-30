@@ -189,8 +189,9 @@
       find  = (document.getElementById("itemName1").value).toLowerCase();
       document.getElementById("itemName1").value = "";
     }
+    var a = 0;
     for (var i = 0; i < menuItems.length; i++) {
-      if((menuItems[i].name).toLowerCase() === find){
+      if(((menuItems[i].name).toLowerCase()).includes(find)){
         found = false;
         var html = menuItemHtml;
         html = insertProperty(html, "short_name", menuItems[i].short_name);
@@ -209,9 +210,15 @@
         );
         html = insertProperty(html, "name", menuItems[i].name);
         html = insertProperty(html, "description", menuItems[i].description);
-
+        if (a % 2 != 0) {
+          html +=
+            "<div class='clearfix visible-lg-block visible-md-block'></div>";
+        }
         finalHtml += html;
-        break;
+        if((menuItems[i].name).toLowerCase()==find){
+          break;
+        }
+        a++;
       }
     }
     if(found){
