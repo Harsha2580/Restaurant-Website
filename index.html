@@ -56,9 +56,9 @@
             <li id="phone" class="hidden-xs">
               <a href="tel:689-602-5008">
                 <span>689-602-5008</span></a><div>* We Deliver</div>
-                <input type="text" class="input" id="catName" placeholder="Enter Category" autocomplete="off">
+                <input type="text" class="input" id="catName" placeholder="Enter Category" autocomplete="off" onkeydown="if(event.keyCode == 13) $fb.search();">
                 <button class = "search" onclick="$fb.search();">Search</button><br>
-                <input type="text" class="input" id="itemName" placeholder="Enter Item name" autocomplete="off">
+                <input type="text" class="input" id="itemName" placeholder="Enter Item name" autocomplete="off" onkeydown="if(event.keyCode == 13) $fb.searchitem();">
                 <button class = "search" onclick="$fb.searchitem();">Search</button>
             </li>
           </ul><!-- #nav-list -->
